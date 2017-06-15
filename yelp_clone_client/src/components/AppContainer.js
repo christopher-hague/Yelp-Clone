@@ -2,6 +2,7 @@ import React from 'react'
 import RestaurantsContainer from './RestaurantsContainer'
 import UsersContainer from './UsersContainer'
 import ReviewsContainer from './ReviewsContainer'
+import UserSignup from './UserSignup'
 import NavBar from './NavBar'
 
 class AppContainer extends React.Component {
@@ -92,16 +93,19 @@ class AppContainer extends React.Component {
   }
 
   render() {
-    console.log(this.state)
+    //console.log("AppContainer state:", this.state)
     return (
       <div>
+        <NavBar />
         <RestaurantsContainer
           handleTermChange={this.handleTermInput.bind(this)}
           handleLocationChange={this.handleLocationInput.bind(this)}
           restaurants={this.state.restaurants}
           yelp={this.state.yelp}
           handleSubmit={this.hitYelp.bind(this)}
+          restaurants={this.state.restaurants}
         />
+        <UserSignup />
       </div>
     )
   }

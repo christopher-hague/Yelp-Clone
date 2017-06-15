@@ -18,6 +18,8 @@ class RestaurantsContainer extends React.Component {
         restaurantShow: nextProps.yelp.businesses[0],
         restaurantIndex: nextProps.yelp.businesses.slice(1, nextProps.yelp.businesses.length)
       })
+
+      this.findShowReviews()
     }
   }
 
@@ -46,11 +48,29 @@ class RestaurantsContainer extends React.Component {
     })
   }
 
+  findShowReviews() {
+    return this.props.restaurants.filter(restaurant => {
+      return restaurant.name === this.state.restaurantShow.name
+    })
+  }
+
   render() {
-    console.log("RestaurantsController state:", this.state)
+    // console.log("testFind:", this.findShowReviews())
+    // console.log("RestaurantsContainer state:", this.state)
+    // console.log("RestaurantsContainerProps", this.props)
     if(this.state.restaurantShow === '' || this.props.restaurants.length === 0) {
       return null
     }
+
+    var showReviews = null
+    if(this.findShowReviews()[0]) {
+      showReviews = this.findShowReviews()[0].reviews.map(review => {
+        return <ul className="ui segment" key={review.id}>{review.content}</ul>
+      })
+    }
+
+
+
     return (
       <div>
         <div className="ui search">
@@ -68,6 +88,7 @@ class RestaurantsContainer extends React.Component {
               <div className="ui segment">
                 <div className="ui jumbo image">
                   <h1>{this.state.restaurantShow.name}</h1>
+                  <em>{this.state.restaurantShow.is_closed ? "Closed" : "Open"}</em>
                   <img src={this.state.restaurantShow.image_url} />
                 </div>
               </div>
@@ -75,7 +96,9 @@ class RestaurantsContainer extends React.Component {
               <ul className="ui segment">Rating: {this.state.restaurantShow.rating}</ul>
               <ul className="ui segment">Phone: {this.state.restaurantShow.display_phone}</ul>
               <ul className="ui segment"> Address: {this.state.restaurantShow.location.display_address.map(line => line).join(" ")}</ul>
-              <ul className="ui segment">*restaurant reviews here*</ul>
+              <ul className="ui segment">Reviews:
+                {showReviews}
+              </ul>
 
               <div className="ui segment secondary">
                 <ReviewsContainer currentRestaurant={this.state.restaurantShow} />
@@ -93,6 +116,7 @@ class RestaurantsContainer extends React.Component {
                         <h3 id={restaurant.name}>{restaurant.name}</h3>
                       </Link>
                       <img className="ui small image" src={restaurant.image_url} />
+                      <div className="left floated right aligned six wide column"><em>{restaurant.is_closed ? "Closed" : "Open"}</em></div>
                       <div className="left floated right aligned six wide column">Rating: {restaurant.rating}</div>
                       <div className="left floated right aligned six wide column">Phone: {restaurant.display_phone}</div>
                     </div>
@@ -109,74 +133,3 @@ class RestaurantsContainer extends React.Component {
 
 
 export default RestaurantsContainer
-
-// ############################
-// functional component
-// const RestaurantsContainer = (props) => {
-//   // put this in top if render. maybe use componentWillReceiveProps/componentDidUpdate
-//   if(!props.yelp.businesses) {
-//     return null
-//   }
-//   // make this container class based to handle state
-//   // set each of the following keys as a state property
-//   // have the values change when an indexed restaurant is clicked
-//   const restaurantShow = props.yelp.businesses[0]
-//   const restaurantIndex = props.yelp.businesses.slice(1, props.yelp.businesses.length)
-//
-//   function handleSubmit(event) {
-//     event.preventDefault()
-//     props.handleSubmit()
-//   }
-//
-//   return (
-//     <div>
-//       <div className="ui search">
-//         <form className="ui icon input" onSubmit={handleSubmit}>
-//           <input onChange={props.handleLocationChange} type="text" className="prompt" autoComplete="off" placeholder="Enter location location" />
-//           <input onChange={props.handleTermChange} type="text" className="prompt" autoComplete="off" placeholder="Enter search term"/>
-//           <input type="submit" value="Submit" />
-//           <i aria-hidden="true" className="search icon"></i>
-//         </form>
-//       </div>
-//
-//       <div className="ui grid">
-//         <div className="twelve wide column">
-//           <div className="ui raised segments">
-//             <div className="ui segment">
-//               <div className="ui jumbo image">
-//                 <h1>{restaurantShow.name}</h1>
-//                 <img src={restaurantShow.image_url} />
-//               </div>
-//             </div>
-//
-//             <ul className="ui segment">Rating: {restaurantShow.rating}</ul>
-//             <ul className="ui segment">Phone: {restaurantShow.display_phone}</ul>
-//             <ul className="ui segment"> Address: {restaurantShow.location.display_address.map(line => line).join(" ")}
-//             </ul>
-//
-//             <div className="ui segment secondary">
-//               <ReviewsContainer currentRestaurant={restaurantShow} />
-//             </div>
-//           </div>
-//         </div>
-//
-//         <div className="four wide column">
-//           <div className="ui raised segments">
-//             <div className="ui segment">
-//               <div className="ui small image">
-//                 {restaurantIndex.map(restaurant =>
-//                   <div className="ui items" key={restaurant.id}>
-//                     <h3>{restaurant.name}</h3>
-//                     <img className="ui small image" src={restaurant.image_url} />
-//                     <div className="left floated right aligned six wide column">Rating: {restaurant.rating}</div>
-//                     <div className="left floated right aligned six wide column">Phone: {restaurant.display_phone}</div>
-//                   </div>
-//                 )}
-//               </div>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//   </div>
-//   )
-// }

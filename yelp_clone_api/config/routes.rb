@@ -5,6 +5,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       get 'restaurants/hitYelp' => 'restaurants#hitYelp'
       get 'restaurant/reviews' => 'restaurants#reviews'
+      post '/auth' => 'auth#create'
       resources :categories
       resources :restaurants
       resources :reviews

@@ -7,16 +7,8 @@ class ReviewsContainer extends React.Component {
     this.state = {
       reviewText: '',
       reviewRating: null,
-      currentRestaurant: props.currentRestaurant.name,
-      curRestaurantReviews: []
+      currentRestaurant: props.currentRestaurant.name
     }
-  }
-
-  componentDidMount() {
-    // send request to a url that has an action to find each of the current restaurants reviews
-    return fetch('http://localhost:3000/api/v1/restaurants')
-    .then(res => res.json())
-    .then(console.log)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -62,7 +54,6 @@ class ReviewsContainer extends React.Component {
       .then( res => res.json() )
       .then(data => {
         this.setState({
-          curRestaurantReviews: data,
           reviewText: '',
           reviewRating: null
         })
@@ -71,7 +62,7 @@ class ReviewsContainer extends React.Component {
   }
 
   render() {
-    console.log("review state", this.state)
+    //console.log("review state", this.state)
     return (
       <div>
         <form onSubmit={this.handleSubmit.bind(this)}>

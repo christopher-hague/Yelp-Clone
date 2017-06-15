@@ -35,10 +35,9 @@ class Api::V1::RestaurantsController < ApplicationController
 
   def hitYelp
     url = "https://api.yelp.com/v3/businesses/search?location=#{params[:location]}&term=#{params[:term]}"
-    # byebug # used byebug to confirm term and location parameters are correct
     begin
       data = RestClient.get(url, headers={
-        'Authorization': `Bearer #{token goes here}`
+        'Authorization': `Bearer #{token_goes_here}`
       })
     rescue RestClient::ExceptionWithResponse => e
       # data is being redefined only if there is an error
