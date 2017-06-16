@@ -6,9 +6,11 @@ class Api::V1::ReviewsController < ApplicationController
   end
 
   def create
+    # send iin token. controller will decode, as the user_id.
     restaurant = Restaurant.find_or_create_by(name: params[:restaurant][:restaurant_name])
     review = Review.new(review_params)
     review.restaurant_id = restaurant.id
+    # review.user_id = jwt.decode
     review.save
     render json: restaurant.reviews
   end

@@ -7,7 +7,8 @@ class ReviewsContainer extends React.Component {
     this.state = {
       reviewText: '',
       reviewRating: null,
-      currentRestaurant: props.currentRestaurant.name
+      currentRestaurant: props.currentRestaurant.name,
+      displayReviewForm: false
     }
   }
 
@@ -44,7 +45,8 @@ class ReviewsContainer extends React.Component {
           review: {
             content: this.state.reviewText,
             rating: this.state.reviewRating,
-            user_id: 1
+            // use this.props.user_id instead of session storage
+            user_id: sessionStorage.user_id
           },
           restaurant: {
             restaurant_name: this.state.currentRestaurant
@@ -61,26 +63,42 @@ class ReviewsContainer extends React.Component {
     }
   }
 
+  toggleReviewShow() {
+    if(this.state.displayReviewForm) {
+      this.setState({
+        displayReviewForm: false
+      })
+    } else {
+      this.setState({
+        displayReviewForm: true
+      })
+    }
+  }
+
   render() {
     //console.log("review state", this.state)
     return (
       <div>
-        <form onSubmit={this.handleSubmit.bind(this)}>
-          <label>
-            Review:
-            <textarea value={this.state.reviewText} onChange={this.handleReviewChange.bind(this)} />
-            Rating:
-            <select onChange={this.handleRatingChange.bind(this)}>
-              <option value={null}></option>
-              <option value={1}>1</option>
-              <option value={2}>2</option>
-              <option value={3}>3</option>
-              <option value={4}>4</option>
-              <option value={5}>5</option>
-            </select>
-          </label>
-          <input type="submit" value="Submit Review"/>
-        </form>
+        <button onClick={this.toggleReviewShow.bind(this)}>{this.state.displayReviewForm ? "Cancel" : "Write a Review"}</button>
+        {!this.state.displayReviewForm ? null : (
+          <form onSubmit={this.handleSubmit.bind(this)}>
+            <label>
+              Review:
+              <textarea value={this.state.reviewText} onChange={this.handleReviewChange.bind(this)} />
+              Rating:
+              <select onChange={this.handleRatingChange.bind(this)}>
+                <option value={null}></option>
+                <option value={1}>1</option>
+                <option value={2}>2</option>
+                <option value={3}>3</option>
+                <option value={4}>4</option>
+                <option value={5}>5</option>
+              </select>
+            </label>
+            <input type="submit" value="Submit Review"/>
+          </form>
+        )}
+
       </div>
     )
   }

@@ -1,8 +1,7 @@
 import React from 'react'
 import RestaurantsContainer from './RestaurantsContainer'
-import UsersContainer from './UsersContainer'
-import ReviewsContainer from './ReviewsContainer'
 import UserSignup from './UserSignup'
+import UserLogin from './UserLogin'
 import NavBar from './NavBar'
 
 class AppContainer extends React.Component {
@@ -10,6 +9,7 @@ class AppContainer extends React.Component {
     super()
 
     this.state = {
+      loggedIn: false,
       restaurants: [],
       categories: [],
       reviews: [],
@@ -92,19 +92,37 @@ class AppContainer extends React.Component {
     })
   }
 
+  handleLogin() {
+    console.log("storage", sessionStorage)
+    this.setState({
+      loggedIn: true
+    })
+  }
+
+  handleLogout() {
+    sessionStorage.removeItem("token")
+    this.setState({
+      loggedIn: false
+    })
+  }
+
   render() {
-    //console.log("AppContainer state:", this.state)
+    console.log("app cont state",this.state)
     return (
       <div>
         <NavBar />
-        <RestaurantsContainer
+        <button onClick={this.handleLogout.bind(this)}>Log Out</button>
+        { sessionStorage.getItem('token') &&
+          <RestaurantsContainer
           handleTermChange={this.handleTermInput.bind(this)}
           handleLocationChange={this.handleLocationInput.bind(this)}
           restaurants={this.state.restaurants}
           yelp={this.state.yelp}
           handleSubmit={this.hitYelp.bind(this)}
           restaurants={this.state.restaurants}
-        />
+          />
+        }
+        <UserLogin handleLogin={this.handleLogin.bind(this)} />
         <UserSignup />
       </div>
     )

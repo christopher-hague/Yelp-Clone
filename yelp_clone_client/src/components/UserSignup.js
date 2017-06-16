@@ -54,11 +54,11 @@ class UserSignup extends React.Component {
     console.log(this.state)
     return (
       <div>
-        <form onSubmit={this.handleCreateUser.bind(this)}>
+        <form className="ui icon input" onSubmit={this.handleCreateUser.bind(this)}>
           <label>
-            <input onChange={this.handleUsernameChange.bind(this)} type="text" placeholder="Username..."/>
-            <input onChange={this.handlePasswordChange.bind(this)} type="password" placeholder="Password..."/>
-            <input type="submit" value="Complete Signup"/>
+            <input value={this.state.username} className="username input" onChange={this.handleUsernameChange.bind(this)} type="text" placeholder="Username..."/>
+            <input value={this.state.password} className="password input" onChange={this.handlePasswordChange.bind(this)} type="password" placeholder="Password..."/>
+            <input type="submit" className="ui submit button" value="Complete Signup"/>
           </label>
         </form>
       </div>

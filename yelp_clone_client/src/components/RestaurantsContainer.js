@@ -8,11 +8,13 @@ class RestaurantsContainer extends React.Component {
 
     this.state = {
       restaurantShow: '',
-      restaurantIndex: ''
+      restaurantIndex: '',
+      displayReviews: false
     }
   }
 
   componentWillReceiveProps(nextProps) {
+    console.log("willReceiveProps:", nextProps)
     if(nextProps.yelp && nextProps.yelp.businesses) {
       this.setState({
         restaurantShow: nextProps.yelp.businesses[0],
@@ -28,14 +30,25 @@ class RestaurantsContainer extends React.Component {
     this.props.handleSubmit()
   }
 
+  componentDidMount() {
+    if(this.props.yelp && this.props.yelp.businesses) {
+      this.setState({
+        restaurantShow: this.props.yelp.businesses[0],
+        restaurantIndex: this.props.yelp.businesses.slice(1, this.props.yelp.businesses.length)
+      })
+
+      this.findShowReviews()
+    }
+  }
+
 
 
   // not very clean, any change to input form causes rerender of initial query
   handleIndexClick(event) {
     event.preventDefault()
-    const newShow = this.state.restaurantIndex.filter(restaurant => {
+    const newShow = this.state.restaurantIndex.find(restaurant => {
       return restaurant.name === event.target.id
-    })[0]
+    })
     const newIndex = this.state.restaurantIndex
 
     newIndex.splice(this.state.restaurantIndex.findIndex(restaurant => restaurant === newShow), 1)
@@ -44,38 +57,52 @@ class RestaurantsContainer extends React.Component {
 
     this.setState({
       restaurantShow: newShow,
-      restaurantIndex: newIndex
+      restaurantIndex: newIndex,
+      displayReviews: false
     })
   }
 
   findShowReviews() {
-    return this.props.restaurants.filter(restaurant => {
+    return this.props.restaurants.find(restaurant => {
       return restaurant.name === this.state.restaurantShow.name
     })
   }
 
+  renderReviews(event) {
+    if(this.state.displayReviews) {
+      this.setState({
+        displayReviews: false
+      })
+    } else {
+      this.setState({
+        displayReviews: true
+      })
+    }
+  }
+
   render() {
     // console.log("testFind:", this.findShowReviews())
-    // console.log("RestaurantsContainer state:", this.state)
+    console.log("RestaurantsContainer state:", this.state)
     // console.log("RestaurantsContainerProps", this.props)
     if(this.state.restaurantShow === '' || this.props.restaurants.length === 0) {
+      console.log("sadjjsdjn")
       return null
     }
 
     var showReviews = null
-    if(this.findShowReviews()[0]) {
-      showReviews = this.findShowReviews()[0].reviews.map(review => {
+    if(this.findShowReviews()) {
+      showReviews = this.findShowReviews().reviews.map(review => {
         return <ul className="ui segment" key={review.id}>{review.content}</ul>
       })
+    } else {
+      showReviews = <em>**There are no reviews at this time. Be the first to submit a review!**</em>
     }
-
-
 
     return (
       <div>
         <div className="ui search">
           <form className="ui icon input" onSubmit={this.handleSubmit.bind(this)}>
-            <input onChange={this.props.handleLocationChange} type="text" className="prompt" autoComplete="off" placeholder="Enter current location" />
+            <input onChange={this.props.handleLocationChange} type="text" className="prompt" autoComplete="off" placeholder="Enter a location" />
             <input onChange={this.props.handleTermChange} type="text" className="prompt" autoComplete="off" placeholder="Enter search term"/>
             <input type="submit" value="Submit" />
             <i aria-hidden="true" className="search icon"></i>
@@ -96,8 +123,11 @@ class RestaurantsContainer extends React.Component {
               <ul className="ui segment">Rating: {this.state.restaurantShow.rating}</ul>
               <ul className="ui segment">Phone: {this.state.restaurantShow.display_phone}</ul>
               <ul className="ui segment"> Address: {this.state.restaurantShow.location.display_address.map(line => line).join(" ")}</ul>
-              <ul className="ui segment">Reviews:
-                {showReviews}
+              <ul className="ui segment">
+                <button onClick={this.renderReviews.bind(this)}>{this.state.displayReviews ? "Hide Reviews" : "Show Reviews"}</button>
+                <div>
+                  {this.state.displayReviews ?  showReviews : null }
+                </div>
               </ul>
 
               <div className="ui segment secondary">

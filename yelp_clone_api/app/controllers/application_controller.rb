@@ -17,8 +17,8 @@ class ApplicationController < ActionController::API
 
   def decode(token)
     JWT.decode(token, ENV['JWT_SECRET'], true, {algorithm: 'HS256'})
-  rescue JWT::DecodeError
-    return nil
+    rescue JWT::DecodeError
+      return nil
   end
 
   def token
