@@ -53,11 +53,9 @@ class UserLogin extends React.Component {
     return (
       <div>
         <form className="ui icon input" onSubmit={this.handleUserAuthentication.bind(this)}>
-          <input className="username input" type="text" onChange={this.handleUsernameChange.bind(this)} placeholder="Enter username"
-          />
+          <input className="username input" type="text" onChange={this.handleUsernameChange.bind(this)} placeholder="Enter username"/>
 
-          <input className="password input" type ="password" onChange={this.handlePasswordChange.bind(this)} placeholder="Enter password"
-          />
+          <input className="password input" type ="password" onChange={this.handlePasswordChange.bind(this)} placeholder="Enter password"/>
 
           <input type="submit" className="ui submit button" value="Login"/>
         </form>

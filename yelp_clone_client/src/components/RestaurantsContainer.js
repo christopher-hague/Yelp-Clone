@@ -45,9 +45,9 @@ class RestaurantsContainer extends React.Component {
   }
 
 
-
-  // not very clean, any change to input form causes rerender of initial query
   handleIndexClick(event) {
+    // have newShow and newIndex be their own function. then put them within another method
+    // and have that method call each of them and then set the state to the return val of each
     event.preventDefault()
     const newShow = this.state.restaurantIndex.find(restaurant => {
       return restaurant.name === event.target.id
