@@ -32,8 +32,8 @@ class ReviewsContainer extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault()
-    if(this.state.reviewRating === null) {
-      alert("You must submit this review with a rating. Select a rating for this business in order to post your review.")
+    if(this.state.reviewRating === null || this.state.reviewText === '') {
+      alert("You must submit this review with content and a rating. Write a review and select a rating for this business in order to post your review.")
     } else {
       fetch("http://localhost:3000/api/v1/reviews", {
         headers: {
@@ -46,7 +46,8 @@ class ReviewsContainer extends React.Component {
             content: this.state.reviewText,
             rating: this.state.reviewRating,
             // use this.props.user_id instead of session storage
-            user_id: sessionStorage.user_id
+            user_id: sessionStorage.user_id,
+            username: sessionStorage.username
           },
           restaurant: {
             restaurant_name: this.state.currentRestaurant
@@ -57,7 +58,8 @@ class ReviewsContainer extends React.Component {
       .then(data => {
         this.setState({
           reviewText: '',
-          reviewRating: null
+          reviewRating: null,
+          displayReviewForm: false
         })
       })
     }
@@ -79,23 +81,23 @@ class ReviewsContainer extends React.Component {
     //console.log("review state", this.state)
     return (
       <div>
-        <button onClick={this.toggleReviewShow.bind(this)}>{this.state.displayReviewForm ? "Cancel" : "Write a Review"}</button>
+        <button className="ui primary button" onClick={this.toggleReviewShow.bind(this)}>{this.state.displayReviewForm ? "Cancel" : "Write a Review"}</button>
         {!this.state.displayReviewForm ? null : (
-          <form onSubmit={this.handleSubmit.bind(this)}>
+          <form className="ui form" onSubmit={this.handleSubmit.bind(this)}>
             <label>
               Review:
-              <textarea value={this.state.reviewText} onChange={this.handleReviewChange.bind(this)} />
+              <textarea className="prompt" value={this.state.reviewText} onChange={this.handleReviewChange.bind(this)} />
               Rating:
-              <select onChange={this.handleRatingChange.bind(this)}>
-                <option value={null}></option>
-                <option value={1}>1</option>
-                <option value={2}>2</option>
-                <option value={3}>3</option>
-                <option value={4}>4</option>
-                <option value={5}>5</option>
+              <select className="ui selection dropdown" onChange={this.handleRatingChange.bind(this)}>
+                <option className="item" value={null}></option>
+                <option className="item" value={1}>1</option>
+                <option className="item" value={2}>2</option>
+                <option className="item" value={3}>3</option>
+                <option className="item" value={4}>4</option>
+                <option className="item" value={5}>5</option>
               </select>
             </label>
-            <input type="submit" value="Submit Review"/>
+            <input className="ui primary button" type="submit" value="Submit Review"/>
           </form>
         )}
 

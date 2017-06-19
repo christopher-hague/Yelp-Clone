@@ -2,14 +2,17 @@ import React from 'react'
 import RestaurantsContainer from './RestaurantsContainer'
 import UserSignup from './UserSignup'
 import UserLogin from './UserLogin'
+import Welcome from './Welcome'
 import NavBar from './NavBar'
+
 
 class AppContainer extends React.Component {
   constructor() {
     super()
 
     this.state = {
-      loggedIn: false,
+      loggedIn: !!sessionStorage.token,
+      userId: null,
       restaurants: [],
       categories: [],
       reviews: [],
@@ -65,7 +68,9 @@ class AppContainer extends React.Component {
     .then( res => res.json() )
     .then( json => {
       this.setState({
-        yelp: json
+        yelp: json,
+        locationInput: '',
+        termInput: ''
       })
     })
   }
@@ -108,22 +113,31 @@ class AppContainer extends React.Component {
 
   render() {
     console.log("app cont state",this.state)
+
     return (
       <div>
-        <NavBar />
-        <button onClick={this.handleLogout.bind(this)}>Log Out</button>
         { sessionStorage.getItem('token') &&
-          <RestaurantsContainer
-          handleTermChange={this.handleTermInput.bind(this)}
-          handleLocationChange={this.handleLocationInput.bind(this)}
-          restaurants={this.state.restaurants}
-          yelp={this.state.yelp}
-          handleSubmit={this.hitYelp.bind(this)}
-          restaurants={this.state.restaurants}
-          />
+          <div>
+            <button className="ui primary button" onClick={this.handleLogout.bind(this)}>Log Out</button>
+            <RestaurantsContainer
+            handleTermChange={this.handleTermInput.bind(this)}
+            handleLocationChange={this.handleLocationInput.bind(this)}
+            users={this.state.users}
+            restaurants={this.state.restaurants}
+            yelp={this.state.yelp}
+            handleSubmit={this.hitYelp.bind(this)}
+            restaurants={this.state.restaurants}
+            fetchReviews={this.fetchReviews.bind(this)}
+            />
+          </div>
         }
-        <UserLogin handleLogin={this.handleLogin.bind(this)} />
-        <UserSignup />
+
+        { !sessionStorage.getItem('token') &&
+          <div>
+            <UserLogin handleLogin={this.handleLogin.bind(this)} />
+            <UserSignup />
+          </div>
+        }
       </div>
     )
   }

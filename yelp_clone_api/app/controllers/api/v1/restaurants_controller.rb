@@ -37,7 +37,7 @@ class Api::V1::RestaurantsController < ApplicationController
     url = "https://api.yelp.com/v3/businesses/search?location=#{params[:location]}&term=#{params[:term]}"
     begin
       data = RestClient.get(url, headers={
-        'Authorization': `Bearer #{access_token_goes_here}`
+        'Authorization': `Bearer #{secret_key_goes_here}`
       })
     rescue RestClient::ExceptionWithResponse => e
       # data is being redefined only if there is an error

@@ -28,6 +28,9 @@ class RestaurantsContainer extends React.Component {
   handleSubmit(event) {
     event.preventDefault()
     this.props.handleSubmit()
+    this.setState({
+      displayReviews: false
+    })
   }
 
   componentDidMount() {
@@ -69,6 +72,7 @@ class RestaurantsContainer extends React.Component {
   }
 
   renderReviews(event) {
+    this.findShowReviews()
     if(this.state.displayReviews) {
       this.setState({
         displayReviews: false
@@ -83,17 +87,30 @@ class RestaurantsContainer extends React.Component {
   render() {
     // console.log("testFind:", this.findShowReviews())
     console.log("RestaurantsContainer state:", this.state)
+    console.log("restaurantProps:", this.props)
     // console.log("RestaurantsContainerProps", this.props)
     if(this.state.restaurantShow === '' || this.props.restaurants.length === 0) {
-      console.log("sadjjsdjn")
       return null
     }
+
+    this.findShowReviews()
 
     var showReviews = null
     if(this.findShowReviews()) {
       showReviews = this.findShowReviews().reviews.map(review => {
-        return <ul className="ui segment" key={review.id}>{review.content}</ul>
-      })
+        return (
+          <ul className="ui segment" key={review.id}>
+            <div>
+              <h3>Rating: {review.rating}</h3>
+              <h6>
+                Posted on {review.created_at.substring(0, 10)}
+              </h6>
+            </div>
+            <em>{review.content}</em><br/>
+            <em>  - {this.props.users.find(user => user.id === review.user_id).username}</em>
+          </ul>
+        )
+      }).reverse()
     } else {
       showReviews = <em>**There are no reviews at this time. Be the first to submit a review!**</em>
     }
@@ -104,7 +121,7 @@ class RestaurantsContainer extends React.Component {
           <form className="ui icon input" onSubmit={this.handleSubmit.bind(this)}>
             <input onChange={this.props.handleLocationChange} type="text" className="prompt" autoComplete="off" placeholder="Enter a location" />
             <input onChange={this.props.handleTermChange} type="text" className="prompt" autoComplete="off" placeholder="Enter search term"/>
-            <input type="submit" value="Submit" />
+            <input className="ui submit button" type="submit" value="Submit" />
             <i aria-hidden="true" className="search icon"></i>
           </form>
         </div>
@@ -124,7 +141,7 @@ class RestaurantsContainer extends React.Component {
               <ul className="ui segment">Phone: {this.state.restaurantShow.display_phone}</ul>
               <ul className="ui segment"> Address: {this.state.restaurantShow.location.display_address.map(line => line).join(" ")}</ul>
               <ul className="ui segment">
-                <button onClick={this.renderReviews.bind(this)}>{this.state.displayReviews ? "Hide Reviews" : "Show Reviews"}</button>
+                <button className="ui primary button" onClick={this.renderReviews.bind(this)}>{this.state.displayReviews ? "Hide Reviews" : "Show Reviews"}</button>
                 <div>
                   {this.state.displayReviews ?  showReviews : null }
                 </div>
