@@ -14,10 +14,10 @@ class RestaurantsContainer extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.yelp && nextProps.yelp.businesses) {
+    if(nextProps.yelp.businesses && nextProps.yelp.businesses.length) {
       this.setState({
         restaurantShow: nextProps.yelp.businesses[0],
-        restaurantIndex: nextProps.yelp.businesses.slice(1, nextProps.yelp.businesses.length)
+        restaurantIndex: nextProps.yelp.businesses.slice(1)
       })
 
       this.findShowReviews()
@@ -33,10 +33,10 @@ class RestaurantsContainer extends React.Component {
   }
 
   componentDidMount() {
-    if(this.props.yelp && this.props.yelp.businesses) {
+    if(this.props.yelp.businesses && this.props.yelp.businesses.length) {
       this.setState({
         restaurantShow: this.props.yelp.businesses[0],
-        restaurantIndex: this.props.yelp.businesses.slice(1, this.props.yelp.businesses.length)
+        restaurantIndex: this.props.yelp.businesses.slice(1)
       })
 
       this.findShowReviews()
@@ -69,9 +69,11 @@ class RestaurantsContainer extends React.Component {
   }
 
   findShowReviews() {
-    return this.props.restaurants.find(restaurant => {
-      return restaurant.name === this.state.restaurantShow.name
-    })
+    // if(this.state.restaurantShow) {
+      return this.props.restaurants.find(restaurant => {
+        return restaurant.name === this.state.restaurantShow.name
+      })
+    // }
   }
 
   renderReviews(event) {
@@ -89,6 +91,7 @@ class RestaurantsContainer extends React.Component {
 
   render() {
     console.log("restContainer", this.state)
+
 
 
     if(this.state.restaurantShow === '' || this.props.restaurants.length === 0) {
@@ -130,18 +133,20 @@ class RestaurantsContainer extends React.Component {
 
         <div className="ui grid">
           <div className="twelve wide column">
+          { /* this.state.restaurantShow ? */ }
             <div className="ui raised segments">
               <div className="ui segment">
-                <div className="ui jumbo image">
-                  <h1>{this.state.restaurantShow.name}</h1>
-                  <em>{this.state.restaurantShow.is_closed ? "Closed" : "Open"}</em>
-                  <img src={this.state.restaurantShow.image_url} />
-                </div>
+                  <div className="ui jumbo image">
+                    <h1>{this.state.restaurantShow.name}</h1>
+                    <em>{this.state.restaurantShow.is_closed ? "Closed" : "Open"}</em>
+                    <img src={this.state.restaurantShow.image_url} />
+                  </div>
               </div>
 
               <ul className="ui segment">Rating: {this.state.restaurantShow.rating}</ul>
               <ul className="ui segment">Phone: {this.state.restaurantShow.display_phone}</ul>
               <ul className="ui segment"> Address: {this.state.restaurantShow.location.display_address.map(line => line).join(" ")}</ul>
+
               <ul className="ui segment">
                 <button className="ui primary button" onClick={this.renderReviews.bind(this)}>{this.state.displayReviews ? "Hide Reviews" : "Show Reviews"}</button>
                 <div>
@@ -150,9 +155,15 @@ class RestaurantsContainer extends React.Component {
               </ul>
 
               <div className="ui segment secondary">
-                <ReviewsContainer currentRestaurant={this.state.restaurantShow} />
+                <ReviewsContainer
+                  findShowReviews={this.findShowReviews.bind(this)}
+                  currentRestaurant={this.state.restaurantShow}
+                />
               </div>
             </div>
+          {/*  :
+            null
+          */}
           </div>
 
           <div className="four wide column">

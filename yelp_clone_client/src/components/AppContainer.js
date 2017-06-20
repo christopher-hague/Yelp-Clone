@@ -67,11 +67,15 @@ class AppContainer extends React.Component {
     return fetch(`http://localhost:3000/api/v1/restaurants/hitYelp?term=${this.state.termInput}&location=${this.state.locationInput}`)
     .then( res => res.json() )
     .then( json => {
-      this.setState({
-        yelp: json,
-        locationInput: '',
-        termInput: ''
-      })
+      if(json.error) {
+        alert("Could not execute search, try altering the location and/or search term.")
+      } else {
+        this.setState({
+          yelp: json,
+          locationInput: '',
+          termInput: ''
+        })
+      }
     })
   }
 
