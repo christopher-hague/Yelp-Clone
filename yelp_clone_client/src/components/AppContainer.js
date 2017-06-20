@@ -127,7 +127,7 @@ class AppContainer extends React.Component {
             yelp={this.state.yelp}
             handleSubmit={this.hitYelp.bind(this)}
             restaurants={this.state.restaurants}
-            fetchReviews={this.fetchReviews.bind(this)}
+            reviews={this.state.reviews}
             />
           </div>
         }

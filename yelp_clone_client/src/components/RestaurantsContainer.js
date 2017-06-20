@@ -14,7 +14,6 @@ class RestaurantsContainer extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log("willReceiveProps:", nextProps)
     if(nextProps.yelp && nextProps.yelp.businesses) {
       this.setState({
         restaurantShow: nextProps.yelp.businesses[0],
@@ -44,23 +43,27 @@ class RestaurantsContainer extends React.Component {
     }
   }
 
-
-  handleIndexClick(event) {
-    // have newShow and newIndex be their own function. then put them within another method
-    // and have that method call each of them and then set the state to the return val of each
-    event.preventDefault()
+  getNewShow(event) {
     const newShow = this.state.restaurantIndex.find(restaurant => {
       return restaurant.name === event.target.id
     })
+    return newShow
+  }
+
+  getNewIndex(event) {
+    const newIndex = this.state.restaurantIndex
+    newIndex.splice(this.state.restaurantIndex.findIndex(restaurant => restaurant === this.getNewShow(event)), 1)
+    newIndex.unshift(this.state.restaurantShow)
+    return newIndex
+  }
+
+  handleIndexClick(event) {
+    event.preventDefault()
     const newIndex = this.state.restaurantIndex
 
-    newIndex.splice(this.state.restaurantIndex.findIndex(restaurant => restaurant === newShow), 1)
-    newIndex.unshift(this.state.restaurantShow)
-
-
     this.setState({
-      restaurantShow: newShow,
-      restaurantIndex: newIndex,
+      restaurantShow: this.getNewShow(event),
+      restaurantIndex: this.getNewIndex(event),
       displayReviews: false
     })
   }
@@ -85,10 +88,9 @@ class RestaurantsContainer extends React.Component {
   }
 
   render() {
-    // console.log("testFind:", this.findShowReviews())
-    console.log("RestaurantsContainer state:", this.state)
-    console.log("restaurantProps:", this.props)
-    // console.log("RestaurantsContainerProps", this.props)
+    console.log("restContainer", this.state)
+
+
     if(this.state.restaurantShow === '' || this.props.restaurants.length === 0) {
       return null
     }
