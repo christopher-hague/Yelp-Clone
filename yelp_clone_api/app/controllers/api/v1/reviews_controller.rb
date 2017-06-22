@@ -12,7 +12,7 @@ class Api::V1::ReviewsController < ApplicationController
     review.restaurant_id = restaurant.id
     # review.user_id = jwt.decode
     review.save
-    render json: restaurant.reviews
+    render json: review
   end
 
   def show

@@ -46,8 +46,8 @@ class ReviewsContainer extends React.Component {
             content: this.state.reviewText,
             rating: this.state.reviewRating,
             // use this.props.user_id instead of session storage
-            user_id: sessionStorage.user_id,
-            username: sessionStorage.username
+            user_id: localStorage.user_id,
+            username: localStorage.userame
           },
           restaurant: {
             restaurant_name: this.state.currentRestaurant
@@ -56,6 +56,7 @@ class ReviewsContainer extends React.Component {
       })
       .then( res => res.json() )
       .then(data => {
+        this.props.fetchRestaurants()
         this.setState({
           reviewText: '',
           reviewRating: null,
@@ -78,7 +79,7 @@ class ReviewsContainer extends React.Component {
   }
 
   render() {
-    //console.log("review state", this.state)
+    // console.log("review state", this.props)
     return (
       <div>
         <button className="ui primary button" onClick={this.toggleReviewShow.bind(this)}>{this.state.displayReviewForm ? "Cancel" : "Write a Review"}</button>

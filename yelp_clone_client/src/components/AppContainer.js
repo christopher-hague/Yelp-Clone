@@ -11,27 +11,35 @@ class AppContainer extends React.Component {
     super()
 
     this.state = {
-      loggedIn: !!sessionStorage.token,
-      userId: null,
+      loggedIn: !!localStorage.token,
+      userId: localStorage.username,
+      username: localStorage.user_id,
+      userToken: localStorage.token,
       restaurants: [],
       categories: [],
       reviews: [],
       users: [],
       yelp: [],
-      locationInput: 'flatiron school',
-      termInput: 'food'
+      locationInput: localStorage.locationInput || 'flatiron school',
+      termInput: localStorage.termInput || 'food'
     }
   }
 
-  fetchRestaurants() {
-    return fetch("http://localhost:3000/api/v1/restaurants")
-      .then( res => res.json() )
-      .then( json => {
-        this.setState({
-          restaurants: json
-        })
-      })
+  setTermInput(str) {
+    this.setState({
+      termInput: str
+    })
   }
+
+  // fetchRestaurants() {
+  //   return fetch("http://localhost:3000/api/v1/restaurants")
+  //     .then( res => res.json() )
+  //     .then( json => {
+  //       this.setState({
+  //         restaurants: json
+  //       })
+  //     })
+  // }
 
   fetchCategories() {
     return fetch("http://localhost:3000/api/v1/categories")
@@ -79,8 +87,14 @@ class AppContainer extends React.Component {
     })
   }
 
+  setTermInput(event) {
+    this.setState({
+      termInput: event
+    })
+  }
+
   componentDidMount() {
-    this.fetchRestaurants()
+    // this.fetchRestaurants()
     this.fetchCategories()
     this.fetchUsers()
     this.fetchReviews()
@@ -89,6 +103,7 @@ class AppContainer extends React.Component {
 
   handleLocationInput(event) {
     const location = event.target.value
+    localStorage.locationInput = location
     this.setState({
       locationInput: location
     })
@@ -96,47 +111,66 @@ class AppContainer extends React.Component {
 
   handleTermInput(event) {
     const term = event.target.value
+    localStorage.termInput = term
     this.setState({
       termInput: term
     })
   }
 
-  handleLogin() {
-    console.log("storage", sessionStorage)
+  handleLogin(username, id) {
+
     this.setState({
-      loggedIn: true
+      loggedIn: true,
+      username: username,
+      userId: id,
+      userToken: localStorage.token
     })
   }
 
   handleLogout() {
-    sessionStorage.removeItem("token")
+    localStorage.removeItem("token")
+    localStorage.removeItem("locationInput")
+    localStorage.removeItem("termInput")
+    localStorage.removeItem("username")
+    localStorage.removeItem("user_id")
     this.setState({
-      loggedIn: false
+      loggedIn: false,
+      userName: null,
+      userId: null,
+      userToken: undefined,
+      locationInput: localStorage.locationInput || 'flatiron school',
+      termInput: localStorage.termInput || 'food'
     })
+    // console.log(this.state)
   }
 
   render() {
-    console.log("app cont state",this.state)
+    // console.log("app cont state",this.state)
 
     return (
       <div>
-        { sessionStorage.getItem('token') &&
+        { localStorage.getItem('token') &&
           <div>
             <button className="ui primary button" onClick={this.handleLogout.bind(this)}>Log Out</button>
             <RestaurantsContainer
             handleTermChange={this.handleTermInput.bind(this)}
             handleLocationChange={this.handleLocationInput.bind(this)}
             users={this.state.users}
-            restaurants={this.state.restaurants}
+            // restaurants={this.state.restaurants}
             yelp={this.state.yelp}
             handleSubmit={this.hitYelp.bind(this)}
-            restaurants={this.state.restaurants}
-            reviews={this.state.reviews}
+            // restaurants={this.state.restaurants}
+            // reviews={this.state.reviews}
+            userId={this.state.userId}
+            username={this.state.username}
+            fetchReviews={this.fetchReviews.bind(this)}
+            fetchRestaurants={this.fetchRestaurants}
+            // setTermInput={this.setTermInput.bind(this)}
             />
           </div>
         }
 
-        { !sessionStorage.getItem('token') &&
+        { !localStorage.getItem('token') &&
           <div>
             <UserLogin handleLogin={this.handleLogin.bind(this)} />
             <UserSignup />

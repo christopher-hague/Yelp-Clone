@@ -9,7 +9,9 @@ class RestaurantsContainer extends React.Component {
     this.state = {
       restaurantShow: '',
       restaurantIndex: '',
-      displayReviews: false
+      displayReviews: false,
+      newestReview: [],
+      restaurants: []
     }
   }
 
@@ -20,7 +22,7 @@ class RestaurantsContainer extends React.Component {
         restaurantIndex: nextProps.yelp.businesses.slice(1)
       })
 
-      this.findShowReviews()
+      this.findShow()
     }
   }
 
@@ -32,15 +34,25 @@ class RestaurantsContainer extends React.Component {
     })
   }
 
+  fetchRestaurants() {
+    return fetch("http://localhost:3000/api/v1/restaurants")
+      .then( res => res.json() )
+      .then( json => {
+        this.setState({
+          restaurants: json
+        })
+      })
+  }
+
   componentDidMount() {
     if(this.props.yelp.businesses && this.props.yelp.businesses.length) {
       this.setState({
         restaurantShow: this.props.yelp.businesses[0],
         restaurantIndex: this.props.yelp.businesses.slice(1)
       })
-
-      this.findShowReviews()
+      this.findShow()
     }
+    this.fetchRestaurants()
   }
 
   getNewShow(event) {
@@ -60,6 +72,7 @@ class RestaurantsContainer extends React.Component {
   handleIndexClick(event) {
     event.preventDefault()
     const newIndex = this.state.restaurantIndex
+    localStorage.termInput = event.target.id
 
     this.setState({
       restaurantShow: this.getNewShow(event),
@@ -68,16 +81,15 @@ class RestaurantsContainer extends React.Component {
     })
   }
 
-  findShowReviews() {
-    // if(this.state.restaurantShow) {
-      return this.props.restaurants.find(restaurant => {
-        return restaurant.name === this.state.restaurantShow.name
-      })
-    // }
+  findShow() {
+    return this.state.restaurants.find(restaurant => {
+      return restaurant.name === this.state.restaurantShow.name
+    })
   }
 
   renderReviews(event) {
-    this.findShowReviews()
+
+    this.findShow()
     if(this.state.displayReviews) {
       this.setState({
         displayReviews: false
@@ -90,19 +102,17 @@ class RestaurantsContainer extends React.Component {
   }
 
   render() {
-    console.log("restContainer", this.state)
+    // console.log("restState", this.state)
 
-
-
-    if(this.state.restaurantShow === '' || this.props.restaurants.length === 0) {
+    if(this.state.restaurantShow === '' || this.state.restaurants.length === 0) {
       return null
     }
 
-    this.findShowReviews()
+    this.findShow()
 
     var showReviews = null
-    if(this.findShowReviews()) {
-      showReviews = this.findShowReviews().reviews.map(review => {
+    if(this.findShow()) {
+      showReviews = this.findShow().reviews.map(review => {
         return (
           <ul className="ui segment" key={review.id}>
             <div>
@@ -133,7 +143,6 @@ class RestaurantsContainer extends React.Component {
 
         <div className="ui grid">
           <div className="twelve wide column">
-          { /* this.state.restaurantShow ? */ }
             <div className="ui raised segments">
               <div className="ui segment">
                   <div className="ui jumbo image">
@@ -156,14 +165,15 @@ class RestaurantsContainer extends React.Component {
 
               <div className="ui segment secondary">
                 <ReviewsContainer
-                  findShowReviews={this.findShowReviews.bind(this)}
+                  findShow={this.findShow.bind(this)}
                   currentRestaurant={this.state.restaurantShow}
+                  userId={this.props.userId}
+                  username={this.props.username}
+                  fetchReviews={this.props.fetchReviews}
+                  fetchRestaurants={this.fetchRestaurants.bind(this)}
                 />
               </div>
             </div>
-          {/*  :
-            null
-          */}
           </div>
 
           <div className="four wide column">

@@ -6,7 +6,9 @@ class UserLogin extends React.Component {
 
     this.state = {
       username: "",
-      password: ""
+      password: "",
+      curUser: null,
+      curUserId: null
     }
   }
 
@@ -25,15 +27,24 @@ class UserLogin extends React.Component {
         }
       })
     })
-    .then( res => res.json() )
+    .then( res =>
+      res.json()
+    )
     .then(json => {
-      // username and user_id are being stored in sessionStorage, which they shouldn't be
-      // store these values in a parent component instead
-      // instead of setting name/id values, write a function that will update the state of username/id in the higher component
-      sessionStorage.setItem('token', json.token)
-      sessionStorage.setItem('username', json.user.username)
-      sessionStorage.setItem('user_id', json.user.user_id)
-      this.props.handleLogin()
+      // console.log("login POST response", json)
+      if (json.error) {
+        alert("user not found")
+      } else {
+        localStorage.setItem('token', json.token)
+        localStorage.setItem("username", json.user.username)
+        localStorage.setItem("user_id", json.user.user_id)
+        this.setState({
+          curUser: json.user.username,
+          curUserId: json.user.user_id
+        })
+        this.props.handleLogin(this.state.curUser, this.state.curUserId)
+        // console.log("login, post response", this.state)
+      }
     })
   }
 
