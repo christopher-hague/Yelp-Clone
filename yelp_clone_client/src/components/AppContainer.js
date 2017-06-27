@@ -165,6 +165,7 @@ class AppContainer extends React.Component {
             username={this.state.username}
             fetchReviews={this.fetchReviews.bind(this)}
             fetchRestaurants={this.fetchRestaurants}
+            fetchUsers={this.fetchUsers.bind(this)}
             // setTermInput={this.setTermInput.bind(this)}
             />
           </div>

@@ -53,6 +53,7 @@ class RestaurantsContainer extends React.Component {
       this.findShow()
     }
     this.fetchRestaurants()
+    this.props.fetchUsers()
   }
 
   getNewShow(event) {
