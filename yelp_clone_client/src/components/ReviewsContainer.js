@@ -45,7 +45,7 @@ class ReviewsContainer extends React.Component {
           review: {
             content: this.state.reviewText,
             rating: this.state.reviewRating,
-            // use this.props.user_id instead of session storage
+            // use this.props.user_id instead of session storage?
             user_id: localStorage.user_id,
             username: localStorage.userame
           },
@@ -79,7 +79,6 @@ class ReviewsContainer extends React.Component {
   }
 
   render() {
-    // console.log("review state", this.props)
     return (
       <div>
         <button className="ui primary button" onClick={this.toggleReviewShow.bind(this)}>{this.state.displayReviewForm ? "Cancel" : "Write a Review"}</button>
