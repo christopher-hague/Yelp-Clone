@@ -14,13 +14,13 @@ const RestaurantShow = (props) => {
     <div className="twelve wide column">
       <div className="ui raised segments">
         <div className="ui segment">
-          <div className="ui embed">
-            <iframe src={restaurant.image_url} frameBorder="0"></iframe>
-          </div>
+          <h1>{restaurant.name}</h1>
         </div>
 
         <div className="ui segment">
-          {restaurant.name} {restaurant.price}
+          <div className="ui embed">
+            <img src={restaurant.image_url} frameBorder="0"></img>
+          </div>
         </div>
 
         <div className="ui segment secondary">
