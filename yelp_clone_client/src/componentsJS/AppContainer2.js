@@ -8,7 +8,8 @@ class appContainer2 extends React.Component {
     super(props)
 
     this.state = {
-      restaurants: []
+      restaurants: [],
+      restaurantShow: null
     }
   }
 
@@ -20,7 +21,8 @@ class appContainer2 extends React.Component {
         alert("Could not execute search. Try altering the location and/or search term.")
       } else {
         this.setState({
-          restaurants: json
+          restaurants: json.businesses,
+          restaurantShow: json.businesses[0]
         })
       }
     })
@@ -32,8 +34,8 @@ class appContainer2 extends React.Component {
       <div className="ui container">
         <SearchBar hitYelp={this.hitYelp.bind(this)} />
         <div className="ui grid">
-          <RestaurantShow />
-          <RestaurantList />
+          <RestaurantShow restaurant={this.state.restaurantShow} />
+          <RestaurantList restaurants={this.state.restaurants}/>
         </div>
       </div>
     )

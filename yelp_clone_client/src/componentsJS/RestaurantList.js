@@ -1,21 +1,18 @@
 import React from 'react'
+import RestaurantListItem from './RestaurantListItem'
 
-class RestaurantList extends React.Component {
-  constructor(props) {
-    super(props)
+const RestaurantList = (props) => {
+  const restaurants = props.restaurants.map(restaurant => (
+    <RestaurantListItem key={restaurant.id} restaurant={restaurant} />
+  ))
 
-    this.state = {
-
-    }
-  }
-
-  render() {
-    return (
-      <div className="four wide column">
-        Test
+  return (
+    <div className="four wide column">
+      <div className="ui items">
+        {restaurants}
       </div>
-    )
-  }
+    </div>
+  )
 }
 
 export default RestaurantList
