@@ -104,6 +104,7 @@ class RestaurantsContainer extends React.Component {
 
   render() {
     // console.log("restState", this.state)
+    console.log(this.state)
 
     if(this.state.restaurantShow === '' || this.state.restaurants.length === 0) {
       return null
@@ -133,14 +134,16 @@ class RestaurantsContainer extends React.Component {
 
     return (
       <div>
-        <div className="ui search">
-          <form className="ui icon input" onSubmit={this.handleSubmit.bind(this)}>
-            <input onChange={this.props.handleLocationChange} type="text" className="prompt" autoComplete="off" placeholder="Enter a location" />
-            <input onChange={this.props.handleTermChange} type="text" className="prompt" autoComplete="off" placeholder="Enter search term"/>
-            <input className="ui submit button" type="submit" value="Submit" />
-            <i aria-hidden="true" className="search icon"></i>
-          </form>
-        </div>
+        {
+        // <div className="ui search">
+        //   <form className="ui icon input" onSubmit={this.handleSubmit.bind(this)}>
+        //     <input onChange={this.props.handleLocationChange} type="text" className="prompt" autoComplete="off" placeholder="Enter a location" />
+        //     <input onChange={this.props.handleTermChange} type="text" className="prompt" autoComplete="off" placeholder="Enter search term"/>
+        //     <input className="ui submit button" type="submit" value="Submit" />
+        //     <i aria-hidden="true" className="search icon"></i>
+        //   </form>
+        // </div>
+        }
 
         <div className="ui grid">
           <div className="twelve wide column">

@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-//import logo from './logo.svg';
 import './App.css';
-import AppContainer from './components/AppContainer'
-//import { Router, Route, Switch, Link } from 'react-router-dom'
+// import AppContainer from './components/AppContainer'
+import AppContainer2 from './componentsJS/AppContainer2'
 import NavBar from './components/NavBar'
 
 class App extends Component {
@@ -11,7 +10,7 @@ class App extends Component {
 
     return (
       <div>
-        <AppContainer />
+        <AppContainer2 />
       </div>
     );
   }

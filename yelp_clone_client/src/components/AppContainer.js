@@ -4,6 +4,7 @@ import UserSignup from './UserSignup'
 import UserLogin from './UserLogin'
 import Welcome from './Welcome'
 import NavBar from './NavBar'
+import SearchBar from './SearchBar'
 
 
 class AppContainer extends React.Component {
@@ -118,7 +119,6 @@ class AppContainer extends React.Component {
   }
 
   handleLogin(username, id) {
-
     this.setState({
       loggedIn: true,
       username: username,
@@ -152,13 +152,19 @@ class AppContainer extends React.Component {
         { localStorage.getItem('token') &&
           <div>
             <button className="ui primary button" onClick={this.handleLogout.bind(this)}>Log Out</button>
-            <RestaurantsContainer
+            <SearchBar
             handleTermChange={this.handleTermInput.bind(this)}
             handleLocationChange={this.handleLocationInput.bind(this)}
+            handleSubmit={this.hitYelp.bind(this)}
+            />
+
+            <RestaurantsContainer
+            // handleTermChange={this.handleTermInput.bind(this)}
+            // handleLocationChange={this.handleLocationInput.bind(this)}
             users={this.state.users}
             // restaurants={this.state.restaurants}
             yelp={this.state.yelp}
-            handleSubmit={this.hitYelp.bind(this)}
+            // handleSubmit={this.hitYelp.bind(this)}
             // restaurants={this.state.restaurants}
             // reviews={this.state.reviews}
             userId={this.state.userId}
@@ -166,7 +172,6 @@ class AppContainer extends React.Component {
             fetchReviews={this.fetchReviews.bind(this)}
             fetchRestaurants={this.fetchRestaurants}
             fetchUsers={this.fetchUsers.bind(this)}
-            // setTermInput={this.setTermInput.bind(this)}
             />
           </div>
         }
