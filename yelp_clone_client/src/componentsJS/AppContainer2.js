@@ -29,7 +29,7 @@ class appContainer2 extends React.Component {
   }
 
   render() {
-    console.log(this.state)
+    console.log(this.state.restaurants.map(rest => rest.id ))
     return (
       <div className="ui container">
         <SearchBar hitYelp={this.hitYelp.bind(this)} />

@@ -1,7 +1,7 @@
 import React from 'react'
 
-const RestaurantShow = (props) => {
-  const restaurant = props.restaurant
+const RestaurantShow = ({restaurant}) => {
+  
   if(!restaurant) {
     return (
       <div className="twelve wide raised column">
@@ -9,6 +9,8 @@ const RestaurantShow = (props) => {
       </div>
     )
   }
+
+  const categories = restaurant.categories.map((category) => category.title).join(", ")
 
   return (
     <div className="twelve wide column">
@@ -23,10 +25,11 @@ const RestaurantShow = (props) => {
           </div>
         </div>
 
+        {/* insert review between pic and info? */}
+
         <div className="ui segment secondary">
-          {/* make it look nicer, include appropriate info*/}
           <li>Phone: {restaurant.display_phone}</ li>
-          <li>Categories: {restaurant.categories.map((category) => category.title)}</li>
+          <li>Categories: {restaurant.categories.map((category) => category.title).join(", ")}</li>
         </div>
       </div>
     </div>
