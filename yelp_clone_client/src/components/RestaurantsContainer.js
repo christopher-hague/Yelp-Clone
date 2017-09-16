@@ -72,7 +72,6 @@ class RestaurantsContainer extends React.Component {
 
   handleIndexClick(event) {
     event.preventDefault()
-    const newIndex = this.state.restaurantIndex
     localStorage.termInput = event.target.id
 
     this.setState({
@@ -103,9 +102,6 @@ class RestaurantsContainer extends React.Component {
   }
 
   render() {
-    // console.log("restState", this.state)
-    console.log(this.state)
-
     if(this.state.restaurantShow === '' || this.state.restaurants.length === 0) {
       return null
     }
@@ -134,17 +130,6 @@ class RestaurantsContainer extends React.Component {
 
     return (
       <div>
-        {
-        // <div className="ui search">
-        //   <form className="ui icon input" onSubmit={this.handleSubmit.bind(this)}>
-        //     <input onChange={this.props.handleLocationChange} type="text" className="prompt" autoComplete="off" placeholder="Enter a location" />
-        //     <input onChange={this.props.handleTermChange} type="text" className="prompt" autoComplete="off" placeholder="Enter search term"/>
-        //     <input className="ui submit button" type="submit" value="Submit" />
-        //     <i aria-hidden="true" className="search icon"></i>
-        //   </form>
-        // </div>
-        }
-
         <div className="ui grid">
           <div className="twelve wide column">
             <div className="ui raised segments">
@@ -152,7 +137,7 @@ class RestaurantsContainer extends React.Component {
                   <div className="ui jumbo image">
                     <h1>{this.state.restaurantShow.name}</h1>
                     <em>{this.state.restaurantShow.is_closed ? "Closed" : "Open"}</em>
-                    <img src={this.state.restaurantShow.image_url} />
+                    <img src={this.state.restaurantShow.image_url} alt={this.state.restaurantShow.name} />
                   </div>
               </div>
 
@@ -161,7 +146,7 @@ class RestaurantsContainer extends React.Component {
               <ul className="ui segment"> Address: {this.state.restaurantShow.location.display_address.map(line => line).join(" ")}</ul>
 
               <ul className="ui segment">
-                <button className="ui primary button" onClick={this.renderReviews.bind(this)}>{this.state.displayReviews ? "Hide Reviews" : "Show Reviews"}</button>
+                <button className="ui primary button" onClick={this.renderReviews.bind(this)}>{this.state.displayReviews ? "Hide Reviews" : "Show Reviews"}</button><br />
                 <div>
                   {this.state.displayReviews ?  showReviews : null }
                 </div>
@@ -189,7 +174,7 @@ class RestaurantsContainer extends React.Component {
                       <Link to={''} onClick={(restaurant) => this.handleIndexClick(restaurant)} >
                         <h3 id={restaurant.name}>{restaurant.name}</h3>
                       </Link>
-                      <img className="ui small image" src={restaurant.image_url} />
+                      <img className="ui small image" src={restaurant.image_url} alt={restaurant.name} />
                       <div className="left floated right aligned six wide column"><em>{restaurant.is_closed ? "Closed" : "Open"}</em></div>
                       <div className="left floated right aligned six wide column">Rating: {restaurant.rating}</div>
                       <div className="left floated right aligned six wide column">Phone: {restaurant.display_phone}</div>

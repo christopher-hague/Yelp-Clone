@@ -28,13 +28,3 @@ class Welcome extends React.Component {
 }
 
 export default Welcome
-
-// <div className="ui centered grid">
-//   <div className="eight wide column">
-//     <UserSignup />
-//   </div>
-//
-//   <div className="eight wide column">
-//     <UserLogin />
-//   </div>
-// </div>

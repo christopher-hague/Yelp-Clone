@@ -2,8 +2,6 @@ import React from 'react'
 import RestaurantsContainer from './RestaurantsContainer'
 import UserSignup from './UserSignup'
 import UserLogin from './UserLogin'
-import Welcome from './Welcome'
-import NavBar from './NavBar'
 import SearchBar from './SearchBar'
 
 
@@ -13,8 +11,8 @@ class AppContainer extends React.Component {
 
     this.state = {
       loggedIn: !!localStorage.token,
-      userId: localStorage.username,
-      username: localStorage.user_id,
+      userId: localStorage.user_id,
+      username: localStorage.username,
       userToken: localStorage.token,
       restaurants: [],
       categories: [],
@@ -32,14 +30,10 @@ class AppContainer extends React.Component {
     })
   }
 
-  // fetchRestaurants() {
-  //   return fetch("http://localhost:3000/api/v1/restaurants")
-  //     .then( res => res.json() )
-  //     .then( json => {
-  //       this.setState({
-  //         restaurants: json
-  //       })
-  //     })
+  // setTermInput(event) {
+  //   this.setState({
+  //     termInput: event
+  //   })
   // }
 
   fetchCategories() {
@@ -88,14 +82,7 @@ class AppContainer extends React.Component {
     })
   }
 
-  setTermInput(event) {
-    this.setState({
-      termInput: event
-    })
-  }
-
   componentDidMount() {
-    // this.fetchRestaurants()
     this.fetchCategories()
     this.fetchUsers()
     this.fetchReviews()
@@ -141,11 +128,9 @@ class AppContainer extends React.Component {
       locationInput: localStorage.locationInput || 'flatiron school',
       termInput: localStorage.termInput || 'food'
     })
-    // console.log(this.state)
   }
 
   render() {
-    // console.log("app cont state",this.state)
 
     return (
       <div>
@@ -159,14 +144,8 @@ class AppContainer extends React.Component {
             />
 
             <RestaurantsContainer
-            // handleTermChange={this.handleTermInput.bind(this)}
-            // handleLocationChange={this.handleLocationInput.bind(this)}
             users={this.state.users}
-            // restaurants={this.state.restaurants}
             yelp={this.state.yelp}
-            // handleSubmit={this.hitYelp.bind(this)}
-            // restaurants={this.state.restaurants}
-            // reviews={this.state.reviews}
             userId={this.state.userId}
             username={this.state.username}
             fetchReviews={this.fetchReviews.bind(this)}

@@ -31,7 +31,6 @@ class UserLogin extends React.Component {
       res.json()
     )
     .then(json => {
-      // console.log("login POST response", json)
       if (json.error) {
         alert("user not found")
       } else {
@@ -43,7 +42,6 @@ class UserLogin extends React.Component {
           curUserId: json.user.user_id
         })
         this.props.handleLogin(this.state.curUser, this.state.curUserId)
-        // console.log("login, post response", this.state)
       }
     })
   }
@@ -76,44 +74,3 @@ class UserLogin extends React.Component {
 }
 
 export default UserLogin
-
-
-
-
-
-//########          FANCY FORM
-// <div className="ui two column middle aligned very relaxed stackable grid">
-//   <div className="column">
-//     <div className="ui form">
-//
-//       <div className="field">
-//         <label>Username</label>
-//         <div className="ui left icon input">
-//           <input type="text" placeholder="Username"/>
-//           <i className="user icon"></i>
-//         </div>
-//       </div>
-//
-//       <div className="field">
-//         <label>Password</label>
-//         <div className="ui left icon input">
-//           <input type="password" />
-//           <i className="lock icon"></i>
-//         </div>
-//       </div>
-//
-//       <div className="ui blue submit button" onClick={this.handleUserAuthentication.bind(this)}>Login</div>
-//     </div>
-//   </div>
-//
-//   <div className="ui vertical divider">
-//   </div>
-//
-//   <div className="center aligned column" onClick={this.props.swapForm}>
-//     <div className="ui big green labeled icon button">
-//       <i className="signup icon"></i>
-//       Sign Up
-//     </div>
-//   </div>
-//
-// </div>
