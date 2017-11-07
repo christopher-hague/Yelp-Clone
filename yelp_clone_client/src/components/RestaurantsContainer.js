@@ -102,6 +102,11 @@ class RestaurantsContainer extends React.Component {
   }
 
   render() {
+    console.log("restaurantShow: ", this.state.restaurantShow,
+      "restaurantIndex: ", this.state.restaurantIndex,
+      "restaurants: ", this.state.restaurants
+    )
+
     if(this.state.restaurantShow === '' || this.state.restaurants.length === 0) {
       return null
     }

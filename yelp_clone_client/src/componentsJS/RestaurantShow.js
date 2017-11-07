@@ -18,15 +18,18 @@ const RestaurantShow = (props) => {
         </div>
 
         <div className="ui segment">
-          <div className="ui embed">
-            <img src={restaurant.image_url} frameBorder="0"></img>
-          </div>
+            <img
+              className="ui centered image"
+              src={restaurant.image_url}
+              frameBorder="0"
+            />
         </div>
 
         <div className="ui segment secondary">
-          {/* make it look nicer, include appropriate info*/}
-          <li>Phone: {restaurant.display_phone}</ li>
-          <li>Categories: {restaurant.categories.map((category) => category.title)}</li>
+          <em>{restaurant.is_closed ? "Closed" : "Open"}</em>
+          <li>{restaurant.categories.map((category) => category.title)}</li>
+          <li>{restaurant.display_phone}</li>
+          <li>{restaurant.location.display_address.map(line => line).join(" ")}</li>
         </div>
       </div>
     </div>
